@@ -2,22 +2,28 @@ defmodule ElixirNsq.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :elixir_nsq,
-     version: "1.0.4",
-     elixir: "~> 1.1",
-     description: description(),
-     package: package(),
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :elixir_nsq,
+      version: "1.0.5",
+      elixir: "~> 1.4",
+      elixirc_paths: elixirc_paths(Mix.env()),
+      description: description(),
+      package: package(),
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :httpotion, :poison, :socket]]
+    [extra_applications: [:logger]]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/test"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Dependencies can be Hex packages:
   #
@@ -30,17 +36,17 @@ defmodule ElixirNsq.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:poison, "~> 1.5.0"},
+      {:poison, "~> 3.1.0"},
       {:ibrowse, "~> 4.2"},
-      {:httpotion, "~> 2.1.0"},
-      {:uuid, "~> 1.1.2"},
-      {:socket, "~> 0.3.1"},
+      {:httpotion, "~> 3.0"},
+      {:uuid, "~> 1.1.7"},
+      {:socket, "~> 0.3.11"},
 
       # testing
-      {:secure_random, "~> 0.2", only: :test},
+      {:secure_random, "~> 0.5", only: :test},
 
       # Small HTTP server for running tests
-      {:http_server, github: "parroty/http_server", only: :test},
+      {:http_server, github: "parroty/http_server", only: :test}
     ]
   end
 
@@ -58,7 +64,7 @@ defmodule ElixirNsq.Mixfile do
       licenses: ["MIT"],
       links: %{
         "GitHub" => "https://github.com/wistia/elixir_nsq"
-      },
+      }
     ]
   end
 end
